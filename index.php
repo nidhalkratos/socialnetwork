@@ -46,7 +46,7 @@ require "config.php";
                 $title = $row['posts_title'];
                 $content = $row['posts_content'];
                 $date = $row['posts_date'];
-                $username = $row['posts_title'];
+                $username = $row['posts_username'];
                 printf("<font color=red><h1>$title</h1></font>");
                 printf("<h6>$username $date</h6>");
                 printf("<p>$content</p>");
