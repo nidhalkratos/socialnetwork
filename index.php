@@ -1,5 +1,6 @@
 <?php 
-    session_start();
+session_start();
+require "config.php";
 ?>
 <html>
     <head>
@@ -8,13 +9,7 @@
     <body>
         <?php
             //print_r($_SESSION);
-            define('db_host','localhost');
-            define('db_user','root');
-            define('db_pass','');
-            define('db_name','social');
-            mysql_connect(db_host, db_user, db_pass) or
-                die("Could not connect: " . mysql_error());
-            mysql_select_db(db_name);
+            
             //*****************************************
             
             //user credentials 
@@ -27,8 +22,8 @@
                 if(mysql_num_rows($result) != 0)
                 {
                     //printf("<a href=logout.php>Logout</a><div align=right>Welcome <b><font size=5>".$username."</font></b></div>");
-                    $row = mysql_fetch_row($result);
-                    printf("<a href=logout.php>Logout</a><div align=right>Welcome <b><font size=5><a href=profile.php>".$username.'</a> <img src='.$row[4].' width=50 height=50>'."</font></b></div>");
+                    $row = mysql_fetch_array($result);
+                    printf("<a href=logout.php>Logout</a><div align=right>Welcome <b><font size=5><a href=profile.php>".$username.'</a> <img src='.$row['users_photourl'].' width=50 height=50>'."</font></b></div>");
                     $loggedin = true;
                 }
                 else
@@ -46,11 +41,15 @@
         
         
         
-            while ($row = mysql_fetch_array($result, MYSQL_NUM)) 
+            while ($row = mysql_fetch_array($result)) 
             {
-                printf("<font color=red><h1>".$row[0]."</h1></font>");
-                printf("<h6>".$row[2]." ".$row[3]."</h6>");
-                printf("<p>".$row[1]."</p>");
+                $title = $row['posts_title'];
+                $content = $row['posts_content'];
+                $date = $row['posts_date'];
+                $username = $row['posts_title'];
+                printf("<font color=red><h1>$title</h1></font>");
+                printf("<h6>$username $date</h6>");
+                printf("<p>$content</p>");
                 printf("<hr>");
             }
             if($loggedin)

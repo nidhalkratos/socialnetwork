@@ -1,5 +1,6 @@
 <?php 
-    session_start();
+session_start();
+require "config.php";
 ?>
 <html>
     <head>
@@ -7,15 +8,7 @@
     </head>
     <body>
         <?php
-            //print_r($_SESSION);
-            define('db_host','localhost');
-            define('db_user','root');
-            define('db_pass','');
-            define('db_name','social');
-            mysql_connect(db_host, db_user, db_pass) or
-                die("Could not connect: " . mysql_error());
-            mysql_select_db(db_name);
-            //*****************************************
+            
             
             //Get the post content
             //*********************************************
@@ -60,12 +53,12 @@
                 $result = mysql_query("select * from users where (users_username = '".$username."' or users_email = '".$username."') and (users_password = '".$password."')");
                 if(mysql_num_rows($result) != 0)
                 {
-                    $row = mysql_fetch_row($result);
-                    printf("<div align=right>Welcome <b><font size=5>".$username.'<img src='.$row[4].' width=50 height=50>'."</font></b></div>");
-                    //$row = mysql_fetch_row($result);
+                    $row = mysql_fetch_array($result);
+                    printf("<div align=right>Welcome <b><font size=5>".$username.'<img src='.$row['users_photourl'].' width=50 height=50>'."</font></b></div>");
                     //printf('<img src='.$row[4].' width=200 height=200>');
                     $loggedin = true;
-                    mysql_query("insert into posts values('".$title."','".$post."',now(),'".$username."')");
+                    $query = "insert into posts values(" . "'" .$title . "','" . $post . "',now(),'" . $username . "')";
+                    mysql_query($query) or die($query);
                 }
                 else
                 {
